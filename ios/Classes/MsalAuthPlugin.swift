@@ -4,7 +4,7 @@ import UIKit
 
 /// This is the main entry point for the Flutter plugin.
 /// It manages the method calls from Flutter & sets results accordingly.
-public class MsalAuthPlugin: NSObject, FlutterPlugin {
+public class MsalAuthPlugin: NSObject, FlutterPlugin, FlutterSceneLifeCycleDelegate {
 
     /// Initializes method channel and register method call delegate.
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -12,6 +12,38 @@ public class MsalAuthPlugin: NSObject, FlutterPlugin {
             name: "msal_auth", binaryMessenger: registrar.messenger())
         let instance = MsalAuthPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
+
+        // Register AppDelegate to handle URL callback.
+        registrar.addApplicationDelegate(instance)
+
+        // Register SceneDelegate to handle URL callback.
+        registrar.addSceneDelegate(instance)
+    }
+
+    /// Handles the URL callback from the browser / third party app.
+    /// Used when iOS app uses `AppDelegate`.
+    public func application(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        return MSALPublicClientApplication.handleMSALResponse(
+            url,
+            sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+        )
+    }
+
+    /// Handles the URL callback from the browser / third party app.
+    /// Used when iOS app uses `SceneDelegate`.
+    public func scene(
+    _ scene: UIScene,
+    openURLContexts URLContexts: Set<UIOpenURLContext>
+    ) -> Bool {
+        guard let url = URLContexts.first?.url else { return false }
+        return MSALPublicClientApplication.handleMSALResponse(
+            url,
+            sourceApplication: URLContexts.first?.options.sourceApplication
+        )
     }
 
     /// Handles method calls received from Dart.
