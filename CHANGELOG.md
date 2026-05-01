@@ -1,3 +1,9 @@
+## 3.4.0
+- Updated native MSAL SDK versions: Android: `8.3.+` and iOS & macOS: `2.11.0`
+- Migrated Android build scripts from Groovy to Kotlin DSL.
+- Added automatic handling of `MSALPublicClientApplication.handleMSALResponse` for iOS URL callbacks via both `AppDelegate` and `SceneDelegate`, removing the need for manual integration in host apps.
+- Added a shared device mode status check method to the `PublicClientApplication` class.
+
 ## 3.3.0
 - Created `AppTheme` style in the `example` app for MSAL WebView in Android. [#issue/119](https://github.com/nayanAubie/msal_auth/issues/119)
 - Added support for customised webview in iOS and macOS. [#issue/90](https://github.com/nayanAubie/msal_auth/issues/90)

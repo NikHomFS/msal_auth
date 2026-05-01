@@ -23,6 +23,7 @@ Microsoft Authentication 🔐 Library for Flutter.
 - Acquire token **interactively** & **silently**
 - Option to set **login hint** & **prompt type** in acquiring token
 - Complete authentication result with account information
+- Check **shared device mode** status
 ---
 
 To implement `MSAL` in Flutter, you first need to set up an app in the `Azure Portal` and configure certain platform-specific settings.
@@ -234,6 +235,8 @@ You don't need to include any rules for `MSAL Android` library as this is done u
 
 ### Handle `callback` from MSAL
 
+> Applicable only when using version `3.3.0 `or earlier. Starting from version `3.4.0`, callback handling is managed internally by the plugin, so no additional setup is required on the app side.
+
 - Your app needs to handle login success callback if app uses [Microsoft Authenticator] app OR `Safari Browser` for authentication. `WebView` does not require it.
 - Your app needs to handle the **login success callback** if it uses the [Microsoft Authenticator] app or `Safari Browser` for authentication. `WebView` does not require this callback.
 
@@ -377,6 +380,23 @@ try {
 ```
 
 All other types of exceptions are optional to handle, depending on your use case.
+
+---
+
+### Shared Device Mode Status
+
+Indicates whether the device is configured by the administrator in Shared Device Mode. When enabled, the device is intended for use by multiple employees. Users can sign in to access work resources, and once they sign out after completing their shift or task, the device is immediately ready for the next employee.
+
+```Dart
+Future<bool?> isSharedDevice() async {
+  try {
+    final isSharedDevice = await publicClientApplication?.isSharedDevice();
+    return isSharedDevice;
+  } on MsalException catch (e) {
+    return false;
+  }
+}
+```
 
 ---
 
