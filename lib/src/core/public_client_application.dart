@@ -38,7 +38,6 @@ class PublicClientApplication {
     /// For iOS, it is only used when broker is webView.
     CustomWebViewConfig? customWebViewConfig,
   }) async {
-    assert(scopes.isNotEmpty, 'Scopes can not be empty');
     final arguments = <String, dynamic>{
       'scopes': scopes,
       'prompt': prompt.name,
@@ -78,7 +77,6 @@ class PublicClientApplication {
     /// a different policy than the one used for initial authentication.
     String? authority,
   }) async {
-    assert(scopes.isNotEmpty, 'Scopes can not be empty');
     if (this is MultipleAccountPca) {
       assert(
         identifier != null,
